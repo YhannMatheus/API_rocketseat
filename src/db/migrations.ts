@@ -1,13 +1,17 @@
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { migrate } from "drizzle-orm/postgres-js/migrator"
+import { drizzle } from "drizzle-orm/postgres-js"
+import postgres from "postgres"
+import { env } from "../env"
+import chalk from 'chalk'
 
-const connection = postgres("postgres://docker:docker@localhost:5432/solid",{max: 1});
+const connection = postgres(env.DATABASE_URL,{max: 1})
 
-const db = drizzle(connection);
+const db = drizzle(connection)
 
-await migrate(db, { migrationsFolder: "drizzle"});
+await migrate(db, { migrationsFolder: "drizzle"})
 
-await connection.end();
+console.log(chalk.green("Migrations completed successfully!"))
 
-process.exit(); 
+await connection.end()
+
+process.exit()
